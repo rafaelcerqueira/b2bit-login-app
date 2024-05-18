@@ -1,14 +1,20 @@
 import React from 'react';
-import './App.css';
-import Form from './components/FormComponent/Form';
+import { BrowserRouter as Router, Route, Routes }  from 'react-router-dom';
+import Login from './components/LoginComponent/Login';
 import Profile from './components/ProfileComponent/Profile';
+import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <Profile />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path='/profile' element={<Profile />} />
+      </Routes>
+    </Router>
   );
 }
+
+
 
 export default App;

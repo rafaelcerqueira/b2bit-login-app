@@ -1,11 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./Profile.css";
 
-function Profile() {
+const Profile: React.FC = () => {
+    const [profile, setProfile] = useState<any | null>(null);
+    const navigate = useNavigate();
+        
+    const handleLogout = () => {
+        localStorage.removeItem("accessToken");
+        navigate("/");
+    }
+
+
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const accessToken = localStorage.getItem("accessToken");
+                const response = await axios.get("https://api.homologation.cliqdrive.com.br/auth/profile", {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        Accept: "application/json;version=v1_web",
+                        "Content-Type": "application/json"
+                    }
+                });
+                setProfile(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        fetchProfile();
+    }, []);
+
+    if (!profile) {
+        return <div>Loading...</div>
+    }
+
     return (
         <div className="profile_pg">
             <div className="profile_btn">
-                <button className="logout-btn">Logout</button>
+                <button className="logout-btn" onClick={handleLogout}>Logout</button>
             </div>
             <div className="profile-container">
                 <div className="profile-info">
@@ -25,6 +61,6 @@ function Profile() {
             </div>
         </div>
     );
-}
+};
 
 export default Profile;
