@@ -52,7 +52,7 @@ const Login: React.FC = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <button className="submit-btn" type="submit">Entrar</button>
+                <button className="submit-btn" type="submit">Sign In</button>
                 {erro && <p>{erro}</p>}
             </form>
         </div>
