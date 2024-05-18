@@ -7,7 +7,7 @@ import axios from "axios";
 const Login: React.FC = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const [erro, setErro] = useState<string>("");
+    const [erro, setError] = useState<string>("");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -23,9 +23,12 @@ const Login: React.FC = () => {
                 }
             }
             );
+
+            localStorage.setItem("accessToken", response.data.accessToken);
+
             console.log(response.data);
         } catch (error) {
-            setErro("Usuário ou senha inválidos");
+            setError("Usuário ou senha inválidos");
         }
     };
 
