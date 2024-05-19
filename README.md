@@ -38,3 +38,21 @@
         Para testar casos de erro, tente fazer login com dados de login incorretos e verifique se recebe a mensagem de erro apropriada.
         Verifique se a aplicação lida corretamente com erros de rede ou outros problemas que possam surgir durante o processo de login.
 
+
+## Telas da Aplicação
+
+
+### Login:
+![alt text](login-screen.png)
+
+### Campos Obrigatórios:
+![alt text](data-needed.png)
+
+### Campos Preenchidos:
+![alt text](login-auth.png)
+
+### Tela de Carregamento:
+![alt text](loading.png)
+
+### Perfil:
+![alt text](profile.png)

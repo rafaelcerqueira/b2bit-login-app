@@ -1,60 +1,78 @@
-import React, { useState } from "react";
-import "./Login.css";
-import logo from "../../assets/b2bit-logo.png";
+import React from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+import logo from "../../assets/b2bit-logo.png";
+import "./Login.css";
 
 
 const Login: React.FC = () => {
-    const [email, setEmail] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-    const [erro, setError] = useState<string>("");
+    const navigate = useNavigate();
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = async (values: any) => {
         try {
-            const response = await axios.post("https://api.homologation.cliqdrive.com.br/auth/login", {
-                email,
-                password
-            },
-            {
-                headers: {
-                    Accept: "application/json;version=v1_web",
-                    "Content-Type": "application/json"
+            const response = await axios.post(
+                "https://api.homologation.cliqdrive.com.br/auth/login/", 
+                {
+                    email: values.email,
+                    password: values.password
+                },
+                {
+                    headers: {
+                        Accept: "application/json;version=v1_web",
+                        "Content-Type": "application/json"
+                    }
                 }
-            }
             );
 
-            localStorage.setItem("accessToken", response.data.accessToken);
+            localStorage.setItem("accessToken", response.data.tokens.access);
+            navigate("/profile");
 
-            console.log(response.data);
         } catch (error) {
-            setError("Usuário ou senha inválidos");
+            console.error("Failed to login", error);
         }
-    };
+    }
 
     return (
-        <div className="card-container">
-            <img src={logo} alt="B2Bit" />
-            <form className="form" onSubmit={handleSubmit}>
-                <label className="login_label" htmlFor="email" >E-mail</label>
-                <input
-                    id="email"
-                    type="email"
-                    placeholder="@gmail.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <label className="login_label" htmlFor="password">Password</label>
-                <input
-                    id="password"
-                    type="password"
-                    placeholder="***************"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                <button className="submit-btn" type="submit">Sign In</button>
-                {erro && <p>{erro}</p>}
-            </form>
+        <div>
+            <div className="card-container">
+                <img src={logo} alt="B2Bit Logo" className="logo" />
+                <Formik
+                    initialValues={{ email: "", password: "" }}
+                    validate={(values) => {
+                        const errors: any = {};
+                        if (!values.email) {
+                            errors.email = "Campo obrigatório";
+                        }
+                        if (!values.password) {
+                            errors.password = "Campo obrigatório";
+                        }
+                        return errors;
+                    }}
+                    onSubmit={handleSubmit}
+                >
+                    <Form className="form">
+                        <div className="form-group">
+                            <label 
+                                className="login_label" 
+                                htmlFor="email"
+                            >E-mail</label>
+                            <Field type="email" name="email" id="email" placeholder="@gmail.com" />
+                            <ErrorMessage name="email" component="div" />
+                        </div>
+                        <div className="form-group">
+                            <label
+                                className="login_label" 
+                                htmlFor="password"
+                            >Password</label>
+                            <Field type="password" name="password" id="password" placeholder="****************" />
+                            <ErrorMessage name="password" component="div" />
+                        </div>
+                        <button className="submit-btn" type="submit">Sign In</button>
+                    </Form>
+                </Formik>
+            </div>
         </div>
     );
 
