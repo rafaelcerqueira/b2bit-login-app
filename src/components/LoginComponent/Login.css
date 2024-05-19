@@ -38,7 +38,7 @@ body {
 .card-container input {
     width: 380px;
     height: 40px;
-    margin: 10px 10px 30px 10px;
+    margin: 10px 20px 20px;
     padding: 10px;
     border: 1px solid #edecec;
     background-color: #edecec;
@@ -54,7 +54,7 @@ body {
 }
 
 .form label {
-    margin-left: 10px;
+    margin-left: 20px;
     font-size: 18px;
     font-weight: 700;
 }

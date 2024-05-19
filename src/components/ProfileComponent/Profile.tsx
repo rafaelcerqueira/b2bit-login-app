@@ -10,32 +10,35 @@ const Profile: React.FC = () => {
     const handleLogout = () => {
         localStorage.removeItem("accessToken");
         navigate("/");
-    }
-
-
+    };
 
     useEffect(() => {
         const fetchProfile = async () => {
             try {
                 const accessToken = localStorage.getItem("accessToken");
-                const response = await axios.get("https://api.homologation.cliqdrive.com.br/auth/profile", {
+                console.log("Token de Acesso: ", accessToken)
+                const response = await axios.get("https://api.homologation.cliqdrive.com.br/auth/profile/", {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
                         Accept: "application/json;version=v1_web",
                         "Content-Type": "application/json"
                     }
                 });
+                console.log("Perfil: ", response.data)
                 setProfile(response.data);
             } catch (error) {
                 console.log(error);
             }
-        }
+        };
 
         fetchProfile();
     }, []);
 
     if (!profile) {
-        return <div>Loading...</div>
+        return (
+            <div className="card-container loading-gif">
+            </div>
+        );
     }
 
     return (
@@ -47,15 +50,15 @@ const Profile: React.FC = () => {
                 <div className="profile-info">
                     <div className="profile_avatar">
                         <p>Profile picture</p>
-                        <img src="https://images.pexels.com/photos/1759530/pexels-photo-1759530.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="avatar" />
+                        <img src={profile.avatar.high} alt="avatar" />
                     </div>
                     <div className="user_info_section">
                         <p className="info_title">Your <b>Name</b></p>
-                        <p className="user_info">Christine James</p>
+                        <p className="user_info">{profile.name}</p>
                     </div>
                     <div className="user_info_section">
                         <p className="info_title">Your <b>E-mail</b></p>
-                        <p className="user_info">christinejames@gmail.com</p>
+                        <p className="user_info">{profile.email}</p>
                     </div>
                 </div>
             </div>
