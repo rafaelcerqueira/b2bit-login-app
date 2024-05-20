@@ -4,7 +4,8 @@
 
 
 ## Deploy
-[Acesse o APP aqui](https://b2bitlogin.netlify.app/)
+Você pode acessar a aplicação online em vez de rodar no "localhost":
+    [Acesse o APP aqui](https://b2bitlogin.netlify.app/)
 
 ## Testando a Aplicação de Login
 
@@ -17,6 +18,10 @@
 
     > Preencher os Campos de Login:
         Na página de login, preencha os campos de email e senha com os dados fornecidos no JSON de teste.
+            As credenciais estão disponíveis na descrição do projeto:
+
+[Acesse a descrição do projeto](https://doc.clickup.com/3020915/p/h/2w63k-48543/4fbf8b7f844323d)
+
         Certifique-se de inserir os dados corretamente, pois eles serão usados para autenticar o usuário na API.
 
     > Clicar no Botão de Login:
@@ -44,7 +49,6 @@
 
 
 ## Telas da Aplicação
-
 
 ### Login:
 ![alt text](login-screen.png)
