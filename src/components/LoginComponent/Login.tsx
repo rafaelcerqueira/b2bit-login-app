@@ -1,23 +1,26 @@
-import React, { useState, FC } from "react";
-import { Formik, Form, Field, ErrorMessage, useFormik } from "formik";
-import axios from "axios";
+import React, { useState } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import axios from "../axiosConfig";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 import logo from "../../assets/b2bit-logo.png";
 import "./Login.css";
 
-const Login: FC = () => {
+const Login: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
 
     interface AxiosError extends Error {
         response?: {
           status: number;
+          data: {
+            message: string;
+          };
         };
     }
 
-    const initalValues = {
+    const initialValues = {
         email: "",
         password: "",
     };
@@ -29,16 +32,10 @@ const Login: FC = () => {
 
     const handleSubmit = async (values: any) => {
         try {
-            const response = await axios.post("https://api.homologation.cliqdrive.com.br/auth/login/",
+            const response = await axios.post("/auth/login/",
                 {
                     email: values.email,
                     password: values.password,
-                },
-                {
-                    headers: {
-                        Accept: "application/json;version=v1_web",
-                        "Content-Type": "application/json",
-                    },
                 }
             );
 
@@ -46,7 +43,8 @@ const Login: FC = () => {
             navigate("/profile");
 
         } catch (err) {
-            if ((err as AxiosError).response?.status === 400) {
+            const axiosError = err as AxiosError;
+            if (axiosError.response?.status === 400) {
                 setErrorMessage("Usuário ou senha inválidos");
             } else {
                 setErrorMessage("Erro ao realizar login");
@@ -54,44 +52,34 @@ const Login: FC = () => {
         }   
     }
 
-
     return (
-        <div>
-            <div className="card-container">
-                <img src={logo} alt="B2Bit Logo" className="logo" />
-                <Formik
-                    initialValues={initalValues}
-                    validationSchema={validationSchema}
-                    onSubmit={handleSubmit}
-                >
-                    {() => (
-                        <Form className="form">
+        <div className="card-container">
+            <img src={logo} alt="B2Bit Logo" className="logo" />
+            <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={handleSubmit}
+            >
+                {() => (
+                    <Form className="form">
                         <div className="form-group">
-                            <label 
-                                className="login_label" 
-                                htmlFor="email"
-                            >E-mail</label>
+                            <label className="login_label" htmlFor="email">E-mail</label>
                             <Field type="email" name="email" id="email" placeholder="@gmail.com" />
                             <ErrorMessage name="email" component="div" className="error"/>
                         </div>
                         <div className="form-group">
-                            <label
-                                className="login_label" 
-                                htmlFor="password"
-                            >Password</label>
+                            <label className="login_label" htmlFor="password">Password</label>
                             <Field type="password" name="password" id="password" placeholder="****************" />
                             <ErrorMessage name="password" component="div" className="error"/>
                         </div>
                         {errorMessage && <div className="error-message">{errorMessage}</div>}
                         <button className="submit-btn" type="submit">Sign In</button>
                     </Form>
-                    )}                     
-                    
-                </Formik>
-            </div>
-        </div>
+                )}                                 
+            </Formik>
+        </div>        
     );
-    
-}
+};
 
 export default Login;
+
