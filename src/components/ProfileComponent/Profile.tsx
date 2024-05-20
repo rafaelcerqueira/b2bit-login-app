@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../axiosConfig";
 import "./Profile.css";
 
 const Profile: React.FC = () => {
     const [profile, setProfile] = useState<any | null>(null);
     const navigate = useNavigate();
-        
+
     const handleLogout = () => {
         localStorage.removeItem("accessToken");
         navigate("/");
@@ -15,19 +15,10 @@ const Profile: React.FC = () => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const accessToken = localStorage.getItem("accessToken");
-                console.log("Token de Acesso: ", accessToken)
-                const response = await axios.get("https://api.homologation.cliqdrive.com.br/auth/profile/", {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                        Accept: "application/json;version=v1_web",
-                        "Content-Type": "application/json"
-                    }
-                });
-                console.log("Perfil: ", response.data)
+                const response = await axios.get("/auth/profile/");
                 setProfile(response.data);
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
         };
 
